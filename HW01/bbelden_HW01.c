@@ -43,15 +43,40 @@ int UABMaxMinDiff(int arr[], int size) {
 
 }
 
+void replaceEvenWithZero(int *p, int size) {
+
+    for (int i = 0; i < size; i++) {
+        if (*p % 2 == 0) {
+            *p = 0;
+        }
+        p++;  
+    }
+}
+
+
+
 int main() {
 
     int mySum = sumOfDigits(123);
-    printf("The sum of the digits represented from the integer passed in as a parameter by the user is: %d\n", mySum);
+    printf("the sum of the digits represented from the integer passed in as a parameter by the user is: %d\n", mySum);
 
     int arr[] = {-2, 4, -1, 6, 5};
     int size_arr = sizeof(arr) / sizeof(arr[0]);
     int myDiff = UABMaxMinDiff(arr, size_arr);
-    printf("From the array passed in by the user, the integer value computed by subtracting the maximum value from the minimum value from the array is: %d\n", myDiff);
+    printf("from the array passed in by the user, the integer value computed by subtracting the maximum value from the minimum value from the array is: %d\n", myDiff);
+
+    int arr2[] = {1, 3, 5};
+    int size_arr2 = sizeof(arr2) / sizeof(arr2[0]);
+    int *ptr1;
+    ptr1 = &arr2[0];
+    replaceEvenWithZero(ptr1, size_arr2);
+    printf("the values in my new array, replacing even integers with 0, are : ");
+    for (int i = 0; i < size_arr2; i++) {
+        printf("%d\t", *ptr1);
+        ptr1++;  
+    }
+    printf("\n");
+
 
     return 0;
 
