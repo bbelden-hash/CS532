@@ -6,10 +6,13 @@
 
 #define BUFFSIZE 4096
 
-int example1(int arg, char *file[]) {
+int examples1AND2(int arg, char *file[]) {
 
     char buffer[BUFFSIZE];
-    long n = 0;
+    long a = 0;
+    long b = 0;
+    long c = 0;
+    char MSG[] = "THIS IS A NEW MSG FROM LSEEK!";
 
     if (arg != 3) {
         fprintf(stderr, "Required three args as command line arguments");
@@ -29,27 +32,59 @@ int example1(int arg, char *file[]) {
         exit(-1);
     }
 
-    while ((n = read(input, buffer, BUFFSIZE)) > 0) {
-        if (write(output, buffer, n) != n) {
+    while ((a = read(input, buffer, BUFFSIZE)) > 0) {
+        if (write(output, buffer, a) != a) {
             fprintf(stderr, "Error reading from input");
             exit(-1);
         }
     }
 
-    if (n < 0) {
+    if (a < 0) {
         fprintf(stderr, "Error counting read file, did not reach specified amount of data to read");
         exit(-1);
     }
 
-    close(input);
     close(output);
 
+    if (lseek(input, -10, SEEK_END) >= 0) {
+        if ((b = read(input, buffer, 10)) > 0) {
+            if (write(STDOUT_FILENO, buffer, b) != b) {
+                fprintf(stderr, "write error");
+                exit(-1);
+            }
+        } else {
+            fprintf(stderr, "read error");
+            exit(-1);
+        }
+    } else {
+        fprintf(stderr, "lseek error");
+        exit(-1);
+    }
+
+    close(input);
+
+    int input2 = open(file[1], O_WRONLY);
+
+    if (lseek(input2, 0, SEEK_SET) >= 0) {
+        if (write(input2, MSG, strlen(MSG)) != strlen(MSG)) {
+            fprintf(stderr, "write error");
+            exit(-1);
+        }
+    } else {
+        fprintf(stderr, "lseek error (Part 2)");
+        exit(-1);
+    }
+
+    close(input2);
+
     return(0);
+
 }
+
 
 int main(int argc, char *argv[]) {
 
-    example1(argc, argv);
+    examples1AND2(argc, argv);
 
     return 0;
 }
