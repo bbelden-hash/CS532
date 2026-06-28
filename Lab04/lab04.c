@@ -11,7 +11,6 @@ int examples1AND2(int arg, char *file[]) {
     char buffer[BUFFSIZE];
     long a = 0;
     long b = 0;
-    long c = 0;
     char MSG[] = "THIS IS A NEW MSG FROM LSEEK!";
 
     if (arg != 3) {
