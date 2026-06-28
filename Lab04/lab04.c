@@ -80,10 +80,52 @@ int examples1AND2(int arg, char *file[]) {
 
 }
 
+int lab04(int arg, char *file[]) {
+
+    ssize_t bytesRead = 0;
+    size_t numOfBytes = 0;
+    char itllBuff[BUFFSIZE];
+
+    if (arg != 3) {
+        fprintf(stderr, "Required three args as command line arguments");
+        exit(-1);
+    }
+
+     if (strcmp(file[1], file[2]) == 0) {
+        fprintf(stderr, "Input and Output files are the same, will lose all data if same");
+        exit(-1);
+    }
+
+    int file1 = open(file[1], O_WRONLY | O_APPEND);
+    int file2 = open(file[2], O_RDONLY);
+
+     if (file1 == -1 || file2 == -1) {
+        fprintf(stderr, "Error reading (or creating) from either file");
+        exit(-1);
+    }
+
+    while ((bytesRead = read(file2, itllBuff, BUFFSIZE)) > 0) {
+        if (write(file1, itllBuff, bytesRead) != bytesRead) {
+            fprintf(stderr, "error: appending data to file");
+            exit(-1);
+        }
+        numOfBytes += bytesRead;
+    }
+
+    printf("\nBytes copied: %zu\n", numOfBytes);
+
+    close(file1);
+    close(file2);
+
+    return 0;
+
+}
+
 
 int main(int argc, char *argv[]) {
 
     examples1AND2(argc, argv);
+    lab04(argc, argv);
 
     return 0;
 }
