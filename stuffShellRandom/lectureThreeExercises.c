@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "someFunc.h"
 
 int exerciseOne(char *arr) {
 
@@ -13,4 +14,11 @@ int main(int argc, char *argv[]) {
     char *ptr1;
     ptr1 = &charArr[0];
     exerciseOne(ptr1);
+
+    printf("\n");
+
+    /* Exercise #2 */
+    printToTerminal();
+
+    return 0;
 }
