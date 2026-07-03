@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-float fillArray() {
-
-    int N;
-
-    printf("How big should we make the array: \n");
-    scanf("%d", &N);
+float fillArray(int N) {
 
     float arr[N];
 
@@ -31,9 +26,23 @@ float fillArray() {
 
 }
 
+void insertionSort(float *p, int size) {
+
+    for (int i = 0; i < size; i++) {
+        int j = i + 1;
+        
+    }
+
+
+
+
+}
+
 int main() {
 
-    fillArray();
+    int size = 9;
+    float arr1 = fillArray(size);
+
 
     return 0;
 }
