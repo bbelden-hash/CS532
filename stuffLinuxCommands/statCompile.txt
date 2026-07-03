@@ -1,0 +1,8 @@
+
+1) gcc -o statING printStat.c lstat.c
+2) ln -s '/Users/benbelden/Desktop/file.txt' 'aSymbolicLink'
+3) mkdir newFolder
+4) ls --> aSymbolicLink, statING, lstat.c, newFolder, printStat.c, aRandomFile.txt
+5) ./statING aFile aRandomFile.txt newFolder
+
+--> from here information should be printed to terminal from lstat.c and printStat.c
