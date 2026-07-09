@@ -42,69 +42,82 @@ struct listing getfields(char *line) {
     return item;
 }
 
-FILE openfile(char *myfile) {
-
+FILE *openfile(char *myfile) {
     FILE *fptr = fopen(myfile, "r");
-    return *fptr;
+
+    if (fptr == NULL) {
+        return NULL;
+    }
+
+    return fptr;
 }
 
-struct listing *fileinfo(FILE *file) {
+struct listing *fileinfo(FILE *file, int *total) {
 
     int capacity = 8;
-    int icount = 0;
-    int rcount = 0;
+    int count = 0;
+    
     struct listing *allitems = malloc(capacity * sizeof(struct listing));
-    struct listing *tmp = malloc(icount * sizeof(struct listing));
+
+    if (allitems == NULL) {
+        fprintf(stderr, "initial malloc error");
+        exit(-1);
+    }
+
     size_t n = 0;
     char *item = NULL;
 
     while((getline(&item, &n, file)) != -1) {
 
-        icount++;
-        tmp = relloc(icount * sizeof(struct listing));
-        tmp[icount - 1] = getfields(item);
+        if (count == capacity) {
+            capacity *= 2;
 
-        if (tmp == NULL) {
+            struct listing *temp = realloc(allitems, capacity * sizeof(struct listing));
+
+            if (temp == NULL) {
                 fprintf(stderr, "realloc error");
-                allitems = tmp;
-                free(tmp);
-                tmp = NULL;
+                free(allitems);
+                free(item);
                 exit(-1);
             }
 
-        if (sizeof(tmp) == (capacity * sizeof(struct listing))) {
-            capacity *= 2;
-
-            allitems = realloc(allitems, capacity * sizeof(struct listing));
+            allitems = temp;
         } 
 
-        allitems[rcount] = getfields(item);
-        rcount++;
+        allitems[count] = getfields(item);
+        count++;
     }
 
     free(item);
-    item = NULL;
-    free(tmp);
-    tmp = NULL;
+    *total = count;
     
     return allitems;
 }
 
-void displayitems(struct listing arr[], int size) {
+void displayitems(struct listing *arr, int size) {
 
     for (int i = 0; i < size; i++) {
 
-        fprintf(stdout, "%s\n", arr[i]);
+        fprintf(stdout, "ID: %d, Host ID: %d, Host Name: %s, Neighborhood: %s, Room Type: %s, Price: %.2f\n", 
+            arr[i].id, arr[i].host_id, arr[i].host_name, arr[i].neighborhood, arr[i].room_type, arr[i].price);
     }
 }
 
 int main(int argc, char **argv) {
 
+    if (argc != 2) {
+        fprintf(stderr, "error: pass .o file and a filename");
+        exit(-1);
+    }
+
+    FILE *listings = openfile(argv[1]);
+
+    int total;
+    struct listing *mylist = fileinfo(listings, &total);
+    displayitems(mylist, total);
+    
 
 
-
-
-
-
+    free(mylist);
 }
 
