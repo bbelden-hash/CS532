@@ -57,6 +57,10 @@ what this program is doing is printing all items within a user specified directo
 
 thats bout all i got --> if any farther questions available at bbelden@uab.edu
 
+ADDITION: 'checking.c' --> 
+recursively searches through a directory tree and returns if it finds at least one file/directory entry that matches the specified filters.
+
+"Search this directory and all subdirectories. If you find a file that satisfies the requested filters (name, size, depth, etc.), return true. Otherwise return false."
 
 
 
