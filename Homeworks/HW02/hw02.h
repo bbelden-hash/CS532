@@ -22,6 +22,7 @@ struct Options {
 int search(int argc, char *argv[]);
 
 int traversal(char *path, int depth, struct Options *options);
+int matching(char *path, int depth, struct Options *options);
 
 void printTab(int depth);
 int isLink(char *file);

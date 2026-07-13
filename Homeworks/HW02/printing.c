@@ -57,7 +57,7 @@ void _Sinfo(char *path, struct dirent *item, int depth) {
     printTab(depth);
 
     fprintf(stdout, 
-        "%s -> Size: %lld bytes, Permissions: %o, Last Access Time: %s\n",
+        "%s -> Size: %lld bytes, Permissions: %o, Last Access Time: %s",
         item->d_name,
         (long long) entry.st_size,
         entry.st_mode & 0777,

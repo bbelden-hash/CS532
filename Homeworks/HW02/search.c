@@ -9,6 +9,8 @@
 
 int traversal(char *path, int depth, struct Options *options);
 
+void dirInfo(char *path, int depth);
+
 int search(int argc, char *argv[]) {
 
     struct Options options;
@@ -139,7 +141,7 @@ int search(int argc, char *argv[]) {
                 exit(-1);
             }
         }
-
+        
         traversal(path, depth, &options);
     }
 

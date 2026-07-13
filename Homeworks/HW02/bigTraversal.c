@@ -10,10 +10,13 @@
 
 #include "hw02.h"
 
+int matching(char *path, int depth, struct Options *options);
+
 void lsInfo(char *path, struct dirent *currItem, int depth);
 void _Sinfo(char *path, struct dirent *item, int depth);
-void printTab(int depth);
 void dirInfo(char *name, int depth);
+
+void printTab(int depth);
 
 int traversal(char *path, int depth, struct Options *options) {
 
@@ -22,11 +25,13 @@ int traversal(char *path, int depth, struct Options *options) {
 
     char fullpath[PATH_MAX];
 
-    void(*funcPtr1)(char *path, struct dirent *item, int depth);
-    void(*funcPtr2)(char *path, struct dirent *currItem, int depth);
+    void(*ptrS)(char *path, struct dirent *item, int depth);
+    void(*ptrLS)(char *path, struct dirent *currItem, int depth);
+    int(*ptrMatch)(char *path, int depth, struct Options *options); 
 
-    funcPtr1 = _Sinfo;
-    funcPtr2 = lsInfo;
+    ptrS = _Sinfo;
+    ptrLS = lsInfo;
+    ptrMatch = matching;
 
     dir = opendir(path);
 
@@ -63,10 +68,11 @@ int traversal(char *path, int depth, struct Options *options) {
 
             if (!options->regularFilter) {
 
-                if (!options->substringFilter || depth < options->maxDepth) {
+                if ((!options->substringFilter && !options->sizeFilter) || 
+                    ptrMatch(fullpath, depth + 1, options)) {
 
                     dirInfo(item->d_name, depth);
-
+                    
                     traversal(
                         fullpath,
                         depth + 1,
@@ -87,6 +93,11 @@ int traversal(char *path, int depth, struct Options *options) {
                 strstr(item->d_name, options->subStr) == NULL) {
                 allowed = 0;  
             } 
+
+            if (options->substringFilter &&
+                depth > options->maxDepth) {
+                    allowed = 0;
+            }
             
             if (options->sizeFilter && 
                 entry.st_size > options->maxBytes) {
@@ -96,14 +107,14 @@ int traversal(char *path, int depth, struct Options *options) {
             if (allowed) {
 
                 if (options->detailed) {
-                    funcPtr1(
+                    ptrS(
                         fullpath,
                         item,
                         depth
                     );
                     
                 } else {
-                    funcPtr2(
+                    ptrLS(
                         fullpath,
                         item,
                         depth

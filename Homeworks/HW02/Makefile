@@ -8,6 +8,7 @@ OBJDIR = obj
 OBJS = $(OBJDIR)/main.o \
 	   $(OBJDIR)/search.o \
 	   $(OBJDIR)/printing.o \
+	   $(OBJDIR)/checking.o \
 	   $(OBJDIR)/bigTraversal.o
 
 hw02: $(OBJS)
