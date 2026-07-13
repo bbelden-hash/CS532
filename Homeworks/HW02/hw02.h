@@ -10,6 +10,8 @@ struct Options {
     int detailed; // -S flag
     int sizeFilter; // -s flag
     int substringFilter; // -f flag
+    int regularFilter; // -t f- flag
+    int dirFilter; // -t d- flag
 
     off_t maxBytes; // -s value
     int maxDepth; // -f depth

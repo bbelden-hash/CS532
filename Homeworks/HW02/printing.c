@@ -17,7 +17,7 @@ void printTab(int depth) {
 
     for (int i = 0; i < depth; i++) {
         printf(
-            "\t>"
+            "\t"
         );
     }
 

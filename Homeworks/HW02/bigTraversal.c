@@ -22,6 +22,12 @@ int traversal(char *path, int depth, struct Options *options) {
 
     char fullpath[PATH_MAX];
 
+    void(*funcPtr1)(char *path, struct dirent *item, int depth);
+    void(*funcPtr2)(char *path, struct dirent *currItem, int depth);
+
+    funcPtr1 = _Sinfo;
+    funcPtr2 = lsInfo;
+
     dir = opendir(path);
 
     if (dir == NULL) {
@@ -50,7 +56,30 @@ int traversal(char *path, int depth, struct Options *options) {
             continue;
         }
 
-        if (S_ISREG(entry.st_mode) || S_ISLNK(entry.st_mode)) {
+        /*
+        Directory handling
+        */
+        if (S_ISDIR(entry.st_mode)) {
+
+            if (!options->regularFilter) {
+
+                if (!options->substringFilter || depth < options->maxDepth) {
+
+                    dirInfo(item->d_name, depth);
+
+                    traversal(
+                        fullpath,
+                        depth + 1,
+                        options
+                    );
+                }
+            }
+
+        } else if (S_ISREG(entry.st_mode) || S_ISLNK(entry.st_mode)) {
+
+            if (options->dirFilter) {
+                continue;
+            }
 
             int allowed = 1;
 
@@ -67,30 +96,21 @@ int traversal(char *path, int depth, struct Options *options) {
             if (allowed) {
 
                 if (options->detailed) {
-                    _Sinfo(
+                    funcPtr1(
                         fullpath,
                         item,
                         depth
                     );
                     
                 } else {
-                    lsInfo(
+                    funcPtr2(
                         fullpath,
                         item,
                         depth
                     );
                 }
             }
-
-        } else if (S_ISDIR(entry.st_mode)) {
-
-            if (!options->substringFilter || depth < options->maxDepth) {
-
-                dirInfo(item->d_name, depth);
-
-                traversal(fullpath, depth + 1, options);
-            }
-        }
+        } 
     }
 
     closedir(dir);

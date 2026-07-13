@@ -16,6 +16,8 @@ int search(int argc, char *argv[]) {
     options.detailed = 0;
     options.sizeFilter = 0;
     options.substringFilter = 0;
+    options.regularFilter = 0;
+    options.dirFilter = 0;
 
     options.maxDepth = 0;
     options.maxBytes = 0;
@@ -92,7 +94,18 @@ int search(int argc, char *argv[]) {
                 strcpy(options.subStr, argv[i + 1]);
                 options.maxDepth = atoi(argv[i + 2]);
                 i+=2;
-            
+
+            } else if (strcmp(argv[i], "-t") == 0) {
+                
+                if (strcmp(argv[i + 1], "f-") == 0) {
+                    options.regularFilter = 1;
+
+                } else if (strcmp(argv[i + 1], "d-") == 0) {
+                    options.dirFilter = 1;
+                }
+
+                i++;
+
             } else {
                 strcpy(path, argv[i]);
             }
