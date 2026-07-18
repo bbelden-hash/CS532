@@ -1,0 +1,3 @@
+/workspaces/CS532/Homeworks/HW01/HW01
+/workspaces/CS532/Homeworks/HW02/hw02 /workspaces/CS532 -S
+
