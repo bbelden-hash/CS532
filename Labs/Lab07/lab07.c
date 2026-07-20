@@ -23,7 +23,7 @@ int _lab07(int argc, char **argv) {
         exit(-1);
     }
 
-    output = fopen(argv[2], "a");
+    output = fopen(argv[2], "w");
 
     while ((getline(&lineptr, &n, input)) != -1) {
 
