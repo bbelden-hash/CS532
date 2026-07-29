@@ -48,10 +48,12 @@ int main(void) {
    
    display various jobs that are currently running in the background using "jobs" 
    
-   to terminate --> "kill -signal_name pid" 
+   to send signal --> "kill -signal_name pid" 
    -signal_name A symbolic signal name specifying the signal to be sent instead of the default TERM 
    
    kill -USR1 5324 ... send the SIGUSR1 signal to process 5324
    kill -STOP PID ... suspends 
    kill -CONT PID ... continues, running 
-   kill -TERM %1,PID ... terminates for good */
+   kill -TERM %1,PID ... terminates for good 
+
+   used kill command to generate the signal, kill could be used to generate any other signal that is supported by the kernal */
