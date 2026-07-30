@@ -4,6 +4,8 @@
 
 #include "myheader.h"
 
+void forking(char *path);
+
 int main(int argc, char **argv) {
 
     struct stat st;
@@ -18,7 +20,7 @@ int main(int argc, char **argv) {
     if (stat(argv[1], &st) == 0) {
         if (S_ISDIR(st.st_mode)) {
             printf("directory: %s\n", argv[1]);
-            //
+            forking(argv[1]);
         } else {
             fprintf(stderr, "item exists, but it is not a directory.\n");
             exit(-1);
