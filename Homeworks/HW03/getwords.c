@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <ctype.h>
 
 #include "myheader.h"
 

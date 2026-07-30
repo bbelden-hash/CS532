@@ -46,10 +46,10 @@ void forking(char *path) {
             exit(-1);
         }
         if (pid == 0) {
-            fprintf(stdout, "this is child process (my PID: %ld | my parent PID: %ld), process print to stdout info on files\n\n",
+            /* fprintf(stdout, "this is child process (my PID: %ld | my parent PID: %ld), process print to stdout info on files\n\n",
                 (long) getpid(),
                 (long) getppid()
-            );
+            ); */
             char *args[] = {"/workspaces/CS532/Homeworks/HW03/forexec/execmain", path, item->d_name, NULL};
 
             execv(args[0], args);
@@ -57,11 +57,12 @@ void forking(char *path) {
             exit(1);
         }
         else {
-            fprintf(stdout, "parent, waiting for the child process to terminate ...\n");
+            /*fprintf(stdout, "parent, waiting for the child process to terminate ...\n"); */
             wait(&status);
 
             if (WIFEXITED(status)) {
-                fprintf(stdout, "child process acquiring information exited with status = %d\n", WEXITSTATUS(status));
+                /* fprintf(stdout, "child process acquiring information exited with status = %d\n", WEXITSTATUS(status)); */
+                continue;
             }
             else {
                 printf("ERROR: child process did not terminate normally!\n");
