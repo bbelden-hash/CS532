@@ -35,8 +35,18 @@ void forking(char *path) {
         }
 
         int status = 0;
+        struct stat filestats;
 
         snprintf(filepath, sizeof(filepath), "%s/%s", path, item->d_name);
+
+        if (lstat(filepath, &filestats) != 0) {
+            fprintf(stderr, "error grabbing stat structure from lstat in journey.c file ...\n");
+            exit(-1);
+        }
+
+        if (S_ISDIR(filestats.st_mode)) {
+            continue;
+        }
 
         pid_t pid = fork();
 
