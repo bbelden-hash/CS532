@@ -4,18 +4,20 @@
 #include <linux/limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pwd.h>
 
 #include "../myheader.h"
 
-int words(char *txt, struct stat *curr, struct dirent *file);
+int words(char *txt, struct stat *curr, struct dirent *file, char *u);
 int info1(struct stat *curr, struct dirent *file);
+int info4(struct stat *curr, struct dirent *file, char *usr);
 
 int main(int argc, char **argv) {
 
     /* dir -> argv[1], item -> all items in 'dir' (iterates), yesfile -> file (struct dirent) looking for */
     DIR *dir;
     struct dirent *item;
-    struct dirent *yesfile;
+    struct dirent *yesfile = NULL;
 
     /* correct -> the file in 'dir' we are looking for, used to give 'yesfile' a value 
        fullpath -> fullpath to 'correct' and 'yesfile->d_name' */
@@ -40,10 +42,17 @@ int main(int argc, char **argv) {
         }
     }
 
+    if (yesfile == NULL) {
+        fprintf(stderr, "in execmain.c variable 'yesfile' never found, file not found\n");
+        closedir(dir);
+        exit(EXIT_FAILURE);
+    }
+
     /* get the fullpath to the file assigned to 'yesfile->d_name' */
     snprintf(fullpath, sizeof(fullpath), "%s/%s", argv[1], yesfile->d_name);
 
     struct stat st;
+    int proceed;
 
     /* "building" a 'stat' struct from the full path found above through 'yesfile->d_name' */
     if (lstat(fullpath, &st) != 0) {
@@ -51,14 +60,31 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
+    // owner = codespace in git ...
+    if (strcmp(argv[3], "1") == 0) {
+        struct passwd *owner = getpwuid(st.st_uid);
+        if (owner != NULL && strcmp(owner->pw_name, argv[4]) == 0) {
+            proceed = 1;
+        } else {
+            proceed = 0;
+        }
+    } else {
+        proceed = 1;
+    }
+
     /* 'ext' will equal something like .c, .txt, .pdf, etc. */
     char *ext = strrchr(yesfile->d_name, '.');
 
-    /* add word count if file is a .txt file, otherwise ... */
-    if (ext != NULL && strcmp(ext, ".txt") == 0) {
-        words(fullpath, &st, yesfile);
-    } else {
-        info1(&st, yesfile);
+    if (proceed == 1) {
+
+        /* add word count if file is a .txt file, otherwise ... */
+        if (ext != NULL && strcmp(ext, ".txt") == 0) {
+            words(fullpath, &st, yesfile, argv[3]);
+        } else if (argv[4] != NULL) {
+            info4(&st, yesfile, argv[4]);
+        } else {
+            info1(&st, yesfile);
+        }
     }
 
     return 0;

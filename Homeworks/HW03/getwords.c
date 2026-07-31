@@ -4,12 +4,15 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <ctype.h>
+#include <string.h>
+#include <pwd.h>
 
 #include "myheader.h"
 
 int info2(struct stat *curr, struct dirent *file, long words);
+int info3(struct stat *curr, struct dirent *file, long words, char *usr);
 
-int words(char *txt, struct stat *curr, struct dirent *file) {
+int words(char *txt, struct stat *curr, struct dirent *file, char *u) {
 
     FILE *fptr = fopen(txt, "r");
 
@@ -47,7 +50,14 @@ int words(char *txt, struct stat *curr, struct dirent *file) {
 
     free(buf);
     fclose(fptr);
-    info2(curr, file, count);
+
+    if (strcmp(u, "1") == 0) {
+        struct passwd *uid = getpwuid(curr->st_uid);
+        info3(curr, file, count, uid->pw_name);
+    } 
+    else {
+        info2(curr, file, count);
+    }
 
     return 0;
 }

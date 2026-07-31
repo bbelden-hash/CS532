@@ -11,7 +11,7 @@
 
 #include "myheader.h"
 
-void forking(char *path) {
+void forking(char *path, char *u, char *usr) {
 
     /* DIR -> type, an open directory stream | dir -> pointer to a DIR 
        struct dirent -> structure defined in <dirent.h> | item -> pointer to that structure | one entry (file or subdirectory) inside 'DIR' */
@@ -34,7 +34,6 @@ void forking(char *path) {
             continue;
         }
 
-        int status = 0;
         struct stat filestats;
 
         snprintf(filepath, sizeof(filepath), "%s/%s", path, item->d_name);
@@ -59,27 +58,27 @@ void forking(char *path) {
             /* fprintf(stdout, "this is child process (my PID: %ld | my parent PID: %ld), process print to stdout info on files\n\n",
                 (long) getpid(),
                 (long) getppid()
-            ); */
-            char *args[] = {"/workspaces/CS532/Homeworks/HW03/forexec/execmain", path, item->d_name, NULL};
+            );*/
+            closedir(dir);
+            char *args[] = {"./forexec/execmain", path, item->d_name, u, usr, NULL};
 
             execv(args[0], args);
-            perror("execvp failed");
-            exit(1);
+            perror("execv failed");
+            _exit(EXIT_FAILURE);
         }
-        else {
-            /*fprintf(stdout, "parent, waiting for the child process to terminate ...\n"); */
-            wait(&status);
+    }
 
-            if (WIFEXITED(status)) {
-                /* fprintf(stdout, "child process acquiring information exited with status = %d\n", WEXITSTATUS(status)); */
-                continue;
-            }
-            else {
-                printf("ERROR: child process did not terminate normally!\n");
-            }
+    int status;
+    while (wait(&status) > 0) {
+        if (WIFEXITED(status)) {
+            // child exited normally
+        } else if (WIFSIGNALED(status)) {
+            fprintf(stderr, "child terminated by signal %d\n", WTERMSIG(status));
         }
-
     }
 
     closedir(dir);
 }
+
+    
+

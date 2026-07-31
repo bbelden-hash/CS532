@@ -31,3 +31,30 @@ int info2(struct stat *curr, struct dirent *file, long words) {
     return 0;
 }
 
+int info3(struct stat *curr, struct dirent *file, long words, char *usr) {
+
+    fprintf(
+        stdout, 
+        "File: %s | Size: %lld bytes | Words: %ld | Owner: %s\n",
+        file->d_name,
+        (long long) curr->st_size,
+        words,
+        usr
+    );
+
+    return 0;
+}
+
+int info4(struct stat *curr, struct dirent *file, char *usr) {
+
+    fprintf(
+        stdout,
+        "File: %s | Size: %lld bytes | Owner: %s\n",
+        file->d_name,
+        (long long) curr->st_size,
+        usr
+    );
+
+    return 0;
+}
+
