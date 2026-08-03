@@ -60,7 +60,7 @@ void forking(char *path, char *u, char *usr) {
                 (long) getppid()
             );*/
             closedir(dir);
-            char *args[] = {"./forexec/execmain", path, item->d_name, u, usr, NULL};
+            char *args[] = {"/workspaces/CS532/Homeworks/HW03/forexec/execmain", path, item->d_name, u, usr, NULL};
 
             execv(args[0], args);
             perror("execv failed");
