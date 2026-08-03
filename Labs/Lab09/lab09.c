@@ -111,7 +111,7 @@ void forkexecvp(int argc, char **argv) {
 
         printf("parent started, child PID = %ld\n", (long)pid);
 
-        // parent handles SIGQUIT, SIGTSTP
+        // parent handles SIGQUIT, SIGTSTP, SIGINT
         signal(SIGQUIT, sighandlerParent);
         signal(SIGTSTP, sighandlerParent);
         signal(SIGINT, sighandlerParent);
