@@ -1,6 +1,6 @@
-total 16
-drwxrwxrwx+  5 codespace root      4096 Aug  4 16:28 Homeworks
-drwxrwxrwx+ 10 codespace root      4096 Aug  4 16:28 Labs
--rw-rw-rw-   1 codespace root        52 Aug  4 16:28 README.md
-drwxrwxrwx+  3 codespace codespace 4096 Aug  4 16:36 Slides
+Please enter your name: [stdout]: Hello Ben!
+Hey! This is the parent process
+Please enter your name: [stdout]: Hello World!
+Hey! This is the parent process
+Linux codespaces-98ef33 6.8.0-1052-azure #58~22.04.1-Ubuntu SMP Thu Mar 26 05:02:21 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 Hey! This is the parent process

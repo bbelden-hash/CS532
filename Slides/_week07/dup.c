@@ -88,3 +88,25 @@ int main(int argc, char **argv) {
 
 /* NOTE: if child "argv[1, ...]" reads from stdin, it will read from stdin.txt,
          because of dup2(), so if stdin.txt is empty --> EOF is reached immediately, no data */
+
+/* compile and run ... 
+    Compile and run this program using myprog as the child process.
+    Note that you have provide input to myprog in the file stdin.txt
+    and the output of myprog will be written to stdout.txt.
+    
+    As we did not do anything with the stderr stream,
+    the output to stderr stream goes to the terminal. 
+    
+    terminal session:
+    $ gcc -Wall -o obj/myprog myprog.c
+    $ gcc -Wall -o obj/dup dup.c
+    $ cat > stdin.txt
+    name
+    ^D
+    $ ./obj/dup ./obj/myprog
+    ...
+    ...
+    $ cat stdout.txt
+    ...
+    ...
+*/
